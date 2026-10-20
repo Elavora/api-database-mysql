@@ -225,9 +225,22 @@ Nesse meio-tempo, valide com o pdo da branch `feat/framework-2` do clone local, 
 Rode a partir de `D:\Felipe\Dev\Elavora`:
 
 ```powershell
-docker run --rm -v "${PWD}\api-database-mysql:/origem:ro" -v "${PWD}\api-database-pdo:/pdo:ro" ghcr.io/elavora/php-dev:8.3-latest sh -c "git config --global --add safe.directory '*' && git clone -q --branch feat/framework-2 /pdo /tmp/pdo && cp -r /origem /tmp/w && cd /tmp/w && composer config repositories.pdo '{\"type\":\"path\",\"url\":\"/tmp/pdo\",\"options\":{\"symlink\":false,\"versions\":{\"elavora/api-database-pdo\":\"1.0.0\"}}}' && composer install --no-interaction --ignore-platform-req=ext-pdo_mysql && vendor/bin/phpunit"
+$cmd = @'
+git config --global --add safe.directory '*' &&
+git clone -q --branch feat/framework-2 /pdo /tmp/pdo &&
+cp -r /origem /tmp/w && cd /tmp/w &&
+composer config repositories.pdo '{"type":"path","url":"/tmp/pdo","options":{"symlink":false,"versions":{"elavora/api-database-pdo":"1.0.0"}}}' &&
+composer install --no-interaction --ignore-platform-req=ext-pdo_mysql &&
+vendor/bin/phpunit
+'@
+docker run --rm -v "${PWD}\api-database-mysql:/origem:ro" -v "${PWD}\api-database-pdo:/pdo:ro" ghcr.io/elavora/php-dev:8.3-latest sh -c $cmd
 ```
 
+O here-string `@'...'@` evita escapar as aspas do JSON. O `'@` de fechamento precisa estar na coluna 0.
+
+- Enquanto o `composer.json` deste repo ainda pedir `elavora/api-database-pdo` `^0.1`, o resolvedor
+  falha com `Root composer.json requires elavora/api-database-pdo ^0.1 ...`. Isso é esperado:
+  o comando só passa depois que o `composer.json` estiver como em "Versão e compatibilidade".
 - O clone usa o que está **commitado** na branch `feat/framework-2` do pdo, não a cópia de trabalho.
 - O `composer validate` fica de fora aqui, porque o `composer.json` da cópia ganhou o repositório `path`.
 - O `composer.json` commitado neste repo não tem `repositories`.
