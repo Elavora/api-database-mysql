@@ -30,7 +30,14 @@ final class MySqlExtension implements Extension
         );
     }
 
-    private function pdoConfig(): array
+    /**
+     * Monta a configuracao do PdoConnectionFactory com o DSN MySQL, sem abrir conexao.
+     *
+     * @return array<string, mixed>
+     *
+     * @throws InvalidArgumentException Quando host/database faltam ou uma conexao nomeada nao e array.
+     */
+    public function pdoConfig(): array
     {
         if (!isset($this->config['connections'])) {
             return $this->withDsn($this->config);
