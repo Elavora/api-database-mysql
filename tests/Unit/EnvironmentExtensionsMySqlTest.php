@@ -31,7 +31,7 @@ final class EnvironmentExtensionsMySqlTest extends TestCase
 
         $mysql = array_values(array_filter(
             $extensions,
-            static fn (mixed $extension): bool => $extension instanceof MySqlExtension,
+            static fn(mixed $extension): bool => $extension instanceof MySqlExtension,
         ));
         self::assertCount(1, $mysql);
 

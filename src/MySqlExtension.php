@@ -15,9 +15,7 @@ final class MySqlExtension implements Extension
     /**
      * @param array<string, mixed> $config Configuracao MySQL unica ou mapa de conexoes.
      */
-    public function __construct(private readonly array $config)
-    {
-    }
+    public function __construct(private readonly array $config) {}
 
     /**
      * Registra a factory PDO configurada para MySQL.
@@ -26,7 +24,7 @@ final class MySqlExtension implements Extension
     {
         $application->container()->bind(
             DatabaseConnectionFactory::class,
-            new PdoConnectionFactory(config: $this->pdoConfig())
+            new PdoConnectionFactory(config: $this->pdoConfig()),
         );
     }
 
