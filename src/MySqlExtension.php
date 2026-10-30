@@ -53,6 +53,11 @@ final class MySqlExtension implements Extension
         return ['connections' => $connections];
     }
 
+    /**
+     * @param array<string, mixed> $config
+     *
+     * @return array<string, mixed>
+     */
     private function withDsn(array $config): array
     {
         $host = $config['host'] ?? null;
