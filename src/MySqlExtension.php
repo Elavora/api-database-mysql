@@ -15,9 +15,7 @@ final class MySqlExtension implements Extension
     /**
      * @param array<string, mixed> $config Configuracao MySQL unica ou mapa de conexoes.
      */
-    public function __construct(private readonly array $config)
-    {
-    }
+    public function __construct(private readonly array $config) {}
 
     /**
      * Registra a factory PDO configurada para MySQL.
@@ -26,11 +24,18 @@ final class MySqlExtension implements Extension
     {
         $application->container()->bind(
             DatabaseConnectionFactory::class,
-            new PdoConnectionFactory(config: $this->pdoConfig())
+            new PdoConnectionFactory(config: $this->pdoConfig()),
         );
     }
 
-    private function pdoConfig(): array
+    /**
+     * Monta a configuracao do PdoConnectionFactory com o DSN MySQL, sem abrir conexao.
+     *
+     * @return array<string, mixed>
+     *
+     * @throws InvalidArgumentException Quando host/database faltam ou uma conexao nomeada nao e array.
+     */
+    public function pdoConfig(): array
     {
         if (!isset($this->config['connections'])) {
             return $this->withDsn($this->config);
@@ -48,6 +53,11 @@ final class MySqlExtension implements Extension
         return ['connections' => $connections];
     }
 
+    /**
+     * @param array<string, mixed> $config
+     *
+     * @return array<string, mixed>
+     */
     private function withDsn(array $config): array
     {
         $host = $config['host'] ?? null;
