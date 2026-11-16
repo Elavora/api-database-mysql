@@ -9,7 +9,7 @@
 Extensão MySQL opcional para o framework Elavora, baseada em `elavora/api-database-pdo`.
 
 - Versão: **1.0.0**. Dependentes devem exigir `"elavora/api-database-mysql": "^1.0"`.
-- Exige `elavora/api-framework` `^3.0`, `elavora/api-database-pdo` `^2.0`, PHP `>=8.3` e `ext-pdo_mysql`.
+- Exige `elavora/api-framework` `^4.1`, `elavora/api-database-pdo` `^3.0`, PHP `>=8.4` e `ext-pdo_mysql`.
 
 Registre `MySqlExtension` com `host`, `port`, `database`, `charset`, `username`, `password`
 e `options`. O pacote monta o DSN `mysql:host=...;port=...;dbname=...;charset=...` e o entrega ao
@@ -24,16 +24,16 @@ A especificação completa, com regras e exemplos, está em [docs/USO.md](docs/U
 composer require elavora/api-database-mysql
 ```
 
-Requisitos: PHP 8.3 ou superior, `ext-pdo_mysql`, `elavora/api-framework` `^3.0` e `elavora/api-database-pdo` `^2.0`.
+Requisitos: PHP 8.4 ou superior, `ext-pdo_mysql`, `elavora/api-framework` `^4.1` e `elavora/api-database-pdo` `^3.0`.
 
 ## Desenvolvimento e testes
 
-Você só precisa de Docker. O ambiente é a imagem `ghcr.io/elavora/php-dev:8.3-latest`: abra o repositório no VS Code
+Você só precisa de Docker. O ambiente é a imagem `ghcr.io/elavora/php-dev:8.4-latest`: abra o repositório no VS Code
 com **Dev Containers: Reopen in Container**, ou rode no PowerShell (a imagem não traz `pdo_mysql`, por isso o
 `--ignore-platform-req`):
 
 ```powershell
-docker run --rm --mount "type=bind,source=$($PWD.Path),target=/workspace" -w /workspace ghcr.io/elavora/php-dev:8.3-latest sh -lc 'git config --global --add safe.directory /workspace && composer install --no-interaction --prefer-dist --ignore-platform-req=ext-pdo_mysql && composer check'
+docker run --rm --mount "type=bind,source=$($PWD.Path),target=/workspace" -w /workspace ghcr.io/elavora/php-dev:8.4-latest sh -lc 'git config --global --add safe.directory /workspace && composer install --no-interaction --prefer-dist --ignore-platform-req=ext-pdo_mysql && composer check'
 ```
 
 Scripts do Composer:
@@ -69,7 +69,7 @@ GitHub Release são geradas em português a partir dos PRs. Veja [Versões e rel
 
 ## Atualizando da 0.x
 
-A 1.0.0 muda os requisitos (PHP 8.3, framework 2 e pdo 1) e torna `MySqlExtension::pdoConfig()` pública; o resto da
+A 1.0.0 muda os requisitos (PHP 8.4, framework 2 e pdo 1) e torna `MySqlExtension::pdoConfig()` pública; o resto da
 API do pacote é o da `v0.2.0`. Veja
 [O que muda para quem usa](docs/USO.md#versão-e-compatibilidade).
 

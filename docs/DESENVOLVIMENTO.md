@@ -4,7 +4,7 @@
 
 ## Ambiente
 
-Você só precisa de Docker. O pacote usa a imagem `ghcr.io/elavora/php-dev:8.3-latest`, com PHP 8.3, Composer, Xdebug,
+Você só precisa de Docker. O pacote usa a imagem `ghcr.io/elavora/php-dev:8.4-latest`, com PHP 8.4, Composer, Xdebug,
 PHP-CS-Fixer e editorconfig-checker. PHPUnit e PHPStan vêm do `composer install`.
 
 **Testes e MySQL.** A suíte PHPUnit (`Elavora API Database MySQL`, pasta `tests`) tem testes unitários, que montam o DSN
@@ -12,7 +12,7 @@ sem abrir conexão e não precisam de MySQL nem de `pdo_mysql`, e um teste de in
 (`tests/Integration/MySqlConnectionTest.php`, grupo `integration`). Esse teste abre uma conexão e roda `SELECT 1`; ele
 é pulado (`markTestSkipped`) quando `MYSQL_HOST` não está definida ou quando a extensão `pdo_mysql` não está carregada.
 Quando roda, usa `MYSQL_HOST`, `MYSQL_PORT` (padrão `3306`), banco `api`, usuário `api` e senha `api`. Nesta máquina e
-no CI ele fica pulado: a imagem `php-dev:8.3-latest` não traz `pdo_mysql`, e nenhum serviço MySQL é iniciado.
+no CI ele fica pulado: a imagem `php-dev:8.4-latest` não traz `pdo_mysql`, e nenhum serviço MySQL é iniciado.
 
 **`ext-pdo_mysql` no `composer install`.** O `composer.json` exige `ext-pdo_mysql`, que a imagem não tem. Por isso os
 comandos `docker run` desta página usam `--ignore-platform-req=ext-pdo_mysql`. Os testes unitários não dependem da
@@ -24,7 +24,7 @@ container, e o arquivo PHP é formatado ao salvar.
 **Sem editor**, na pasta do repositório, no PowerShell (no Git Bash a conversão de caminhos quebra o `docker run`):
 
 ```powershell
-docker run --rm --mount "type=bind,source=$($PWD.Path),target=/workspace" -w /workspace ghcr.io/elavora/php-dev:8.3-latest sh -lc 'git config --global --add safe.directory /workspace && composer install --no-interaction --prefer-dist --ignore-platform-req=ext-pdo_mysql && composer check'
+docker run --rm --mount "type=bind,source=$($PWD.Path),target=/workspace" -w /workspace ghcr.io/elavora/php-dev:8.4-latest sh -lc 'git config --global --add safe.directory /workspace && composer install --no-interaction --prefer-dist --ignore-platform-req=ext-pdo_mysql && composer check'
 ```
 
 Esse comando cria `vendor/` e `composer.lock` na pasta (os dois estão no `.gitignore`) e pode atualizar o
@@ -46,7 +46,7 @@ O CI roda a suíte num clone limpo, com cobertura. O mount do Windows esconde er
 pasta do repositório (commite antes: o clone pega só o que está commitado):
 
 ```powershell
-docker run --rm -v "$($PWD.Path):/origem:ro" -e XDEBUG_MODE=coverage ghcr.io/elavora/php-dev:8.3-latest sh -lc 'git config --global --add safe.directory "*" && git clone -q /origem /tmp/repo && cd /tmp/repo && composer validate --strict --no-check-publish && composer install --no-interaction --prefer-dist --ignore-platform-req=ext-pdo_mysql && composer lint && composer analyse && composer test -- --coverage-clover=/tmp/clover.xml && git ls-files -z | xargs -0 editorconfig-checker'
+docker run --rm -v "$($PWD.Path):/origem:ro" -e XDEBUG_MODE=coverage ghcr.io/elavora/php-dev:8.4-latest sh -lc 'git config --global --add safe.directory "*" && git clone -q /origem /tmp/repo && cd /tmp/repo && composer validate --strict --no-check-publish && composer install --no-interaction --prefer-dist --ignore-platform-req=ext-pdo_mysql && composer lint && composer analyse && composer test -- --coverage-clover=/tmp/clover.xml && git ls-files -z | xargs -0 editorconfig-checker'
 ```
 
 Tudo precisa sair com código 0, e o aviso `No filter is configured` não pode aparecer. O comando não deixa nada na

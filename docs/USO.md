@@ -12,14 +12,14 @@ Este pacote recebe host, porta, banco e credenciais, monta o DSN do MySQL e entr
 | Versão deste pacote | **1.0.0** (sai do PR com label `upgrade`, que sobe a major a partir da `v0.2.0`) |
 | `elavora/api-database-pdo` exigido | `^1.0` |
 | `elavora/api-framework` exigido | `^2.0` |
-| PHP exigido | `>=8.3` (o mesmo mínimo do framework 2.0) |
+| PHP exigido | `>=8.4` (o mesmo mínimo do framework 2.0) |
 | Extensão exigida | `ext-pdo_mysql` `*` |
 
 O `composer.json` do pacote declara exatamente:
 
 ```json
 "require": {
-    "php": ">=8.3",
+    "php": ">=8.4",
     "ext-pdo_mysql": "*",
     "elavora/api-database-pdo": "^1.0",
     "elavora/api-framework": "^2.0"
@@ -210,10 +210,10 @@ Ele usa `MYSQL_HOST`, `MYSQL_PORT` (padrão `3306`), banco `api`, usuário `api`
 Pelo PowerShell, no container da organização, montando o repo em `/origem`:
 
 ```powershell
-docker run --rm -v "${PWD}:/origem:ro" ghcr.io/elavora/php-dev:8.3-latest sh -c "cp -r /origem /tmp/w && cd /tmp/w && composer install --no-interaction --ignore-platform-req=ext-pdo_mysql && composer validate --strict --no-check-publish && vendor/bin/phpunit"
+docker run --rm -v "${PWD}:/origem:ro" ghcr.io/elavora/php-dev:8.4-latest sh -c "cp -r /origem /tmp/w && cd /tmp/w && composer install --no-interaction --ignore-platform-req=ext-pdo_mysql && composer validate --strict --no-check-publish && vendor/bin/phpunit"
 ```
 
-A imagem `php-dev:8.3-latest` não tem a extensão `pdo_mysql`. Por isso o `composer install`
+A imagem `php-dev:8.4-latest` não tem a extensão `pdo_mysql`. Por isso o `composer install`
 usa `--ignore-platform-req=ext-pdo_mysql`. Os testes unitários não precisam dela,
 e o teste de integração é pulado.
 
@@ -233,7 +233,7 @@ composer config repositories.pdo '{"type":"path","url":"/tmp/pdo","options":{"sy
 composer install --no-interaction --ignore-platform-req=ext-pdo_mysql &&
 vendor/bin/phpunit
 '@
-docker run --rm -v "${PWD}\api-database-mysql:/origem:ro" -v "${PWD}\api-database-pdo:/pdo:ro" ghcr.io/elavora/php-dev:8.3-latest sh -c $cmd
+docker run --rm -v "${PWD}\api-database-mysql:/origem:ro" -v "${PWD}\api-database-pdo:/pdo:ro" ghcr.io/elavora/php-dev:8.4-latest sh -c $cmd
 ```
 
 O here-string `@'...'@` evita escapar as aspas do JSON. O `'@` de fechamento precisa estar na coluna 0.

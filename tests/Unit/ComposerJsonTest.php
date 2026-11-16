@@ -23,10 +23,10 @@ final class ComposerJsonTest extends TestCase
     public function testRequire(): void
     {
         self::assertEquals([
-            'php' => '>=8.3',
+            'php' => '>=8.4',
             'ext-pdo_mysql' => '*',
-            'elavora/api-database-pdo' => '^2.0',
-            'elavora/api-framework' => '^3.0',
+            'elavora/api-database-pdo' => '^3.0',
+            'elavora/api-framework' => '^4.1',
         ], self::composer()['require'] ?? null);
     }
 
@@ -40,6 +40,6 @@ final class ComposerJsonTest extends TestCase
 
     public function testBranchAlias(): void
     {
-        self::assertSame('2.0-dev', self::composer()['extra']['branch-alias']['dev-main'] ?? null);
+        self::assertSame('3.0-dev', self::composer()['extra']['branch-alias']['dev-main'] ?? null);
     }
 }
